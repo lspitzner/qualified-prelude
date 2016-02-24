@@ -1,0 +1,11 @@
+import qualified Criterion
+import qualified Criterion.Analysis
+import qualified Criterion.IO
+import qualified Criterion.IO.Printf
+import qualified Criterion.Internal
+import qualified Criterion.Main
+import qualified Criterion.Main.Options
+import qualified Criterion.Measurement
+import qualified Criterion.Monad
+import qualified Criterion.Report
+import qualified Criterion.Types

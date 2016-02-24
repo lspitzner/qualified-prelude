@@ -1,0 +1,10 @@
+import qualified System.Console.CmdArgs
+import qualified System.Console.CmdArgs.Annotate
+import qualified System.Console.CmdArgs.Default
+import qualified System.Console.CmdArgs.Explicit
+import qualified System.Console.CmdArgs.GetOpt
+import qualified System.Console.CmdArgs.Helper
+import qualified System.Console.CmdArgs.Implicit
+import qualified System.Console.CmdArgs.Quote
+import qualified System.Console.CmdArgs.Text
+import qualified System.Console.CmdArgs.Verbosity

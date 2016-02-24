@@ -1,0 +1,242 @@
+name:                qualified-prelude
+version:             0.0.0.999.11
+synopsis:            A Prelude providing qualified imports by using CPP
+license:             BSD3
+license-file:        LICENSE
+author:              Lennart Spitzner
+maintainer:          lsp@informatik.uni-kiel.de
+-- copyright:           
+category:            Prelude
+build-type:          Simple
+cabal-version:       >=1.10
+
+description: {
+  Description is in the README. [Please implement markdown
+  support for the description and make it default. Thx.]
+}
+
+extra-source-files: {
+  ChangeLog.md
+  README.md
+}
+library {
+  exposed-modules: {
+    QPrelude.Basics
+    QPrelude.ErrorIf
+  }  
+  -- other-modules:       
+  -- other-extensions:    
+  include-dirs: {
+    src-headers
+  }
+  install-includes: {
+    qprelude/bundle-alpha.inc
+    qprelude/bundle-gamma.inc
+    qprelude/fully/all.inc
+    qprelude/fully/bootlibs.inc
+    qprelude/fully/packages/aeson.inc
+    qprelude/fully/packages/array.inc
+    qprelude/fully/packages/async.inc
+    qprelude/fully/packages/attoparsec.inc
+    qprelude/fully/packages/base64-bytestring.inc
+    qprelude/fully/packages/base.inc
+    qprelude/fully/packages/binary.inc
+    qprelude/fully/packages/blaze-builder.inc
+    qprelude/fully/packages/bytestring.inc
+    qprelude/fully/packages/Cabal.inc
+    qprelude/fully/packages/case-insensitive.inc
+    qprelude/fully/packages/cereal.inc
+    qprelude/fully/packages/cmdargs.inc
+    qprelude/fully/packages/conduit.inc
+    qprelude/fully/packages/containers.inc
+    qprelude/fully/packages/criterion.inc
+    qprelude/fully/packages/data-default.inc
+    qprelude/fully/packages/deepseq.inc
+    qprelude/fully/packages/directory.inc
+    qprelude/fully/packages/dlist.inc
+    qprelude/fully/packages/doctest.inc
+    qprelude/fully/packages/either.inc
+    qprelude/fully/packages/exceptions.inc
+    qprelude/fully/packages/extra.inc
+    qprelude/fully/packages/filepath.inc
+    qprelude/fully/packages/hashable.inc
+    qprelude/fully/packages/haskeline.inc
+    qprelude/fully/packages/hoopl.inc
+    qprelude/fully/packages/hpc.inc
+    qprelude/fully/packages/hspec.inc
+    qprelude/fully/packages/http-conduit.inc
+    qprelude/fully/packages/HTTP.inc
+    qprelude/fully/packages/http-types.inc
+    qprelude/fully/packages/HUnit.inc
+    qprelude/fully/packages/interger-gmp.inc
+    qprelude/fully/packages/lens.inc
+    qprelude/fully/packages/monad-control.inc
+    qprelude/fully/packages/mtl.inc
+    qprelude/fully/packages/multistate.inc
+    qprelude/fully/packages/network.inc
+    qprelude/fully/packages/network-uri.inc
+    qprelude/fully/packages/optparse-applicative.inc
+    qprelude/fully/packages/parallel.inc
+    qprelude/fully/packages/parsec.inc
+    qprelude/fully/packages/pretty.inc
+    qprelude/fully/packages/primitive.inc
+    qprelude/fully/packages/process.inc
+    qprelude/fully/packages/QuickCheck.inc
+    qprelude/fully/packages/random.inc
+    qprelude/fully/packages/resourcet.inc
+    qprelude/fully/packages/safe.inc
+    qprelude/fully/packages/scientific.inc
+    qprelude/fully/packages/semigroups.inc
+    qprelude/fully/packages/split.inc
+    qprelude/fully/packages/stm.inc
+    qprelude/fully/packages/storablevector.inc
+    qprelude/fully/packages/syb.inc
+    qprelude/fully/packages/tagged.inc
+    qprelude/fully/packages/tasty-hunit.inc
+    qprelude/fully/packages/tasty.inc
+    qprelude/fully/packages/tasty-quickcheck.inc
+    qprelude/fully/packages/template-haskell.inc
+    qprelude/fully/packages/terminfo.inc
+    qprelude/fully/packages/test-framework-hunit.inc
+    qprelude/fully/packages/test-framework.inc
+    qprelude/fully/packages/text.inc
+    qprelude/fully/packages/time.inc
+    qprelude/fully/packages/transformers.inc
+    qprelude/fully/packages/unix.inc
+    qprelude/fully/packages/unordered-containers.inc
+    qprelude/fully/packages/unsafe.inc
+    qprelude/fully/packages/utf8-string.inc
+    qprelude/fully/packages/vector.inc
+    qprelude/fully/packages/wai.inc
+    qprelude/fully/packages/xhtml.inc
+    qprelude/prelude-alpha/all.inc
+    qprelude/prelude-beta/all.inc
+    qprelude/prelude-eta/all.inc
+    qprelude/qualified-alpha/all.inc
+    qprelude/qualified-alpha/packages/base.inc
+    qprelude/qualified-alpha/packages/binary.inc
+    qprelude/qualified-alpha/packages/bytestring.inc
+    qprelude/qualified-alpha/packages/containers.inc
+    qprelude/qualified-alpha/packages/deepseq.inc
+    qprelude/qualified-alpha/packages/dlist.inc
+    qprelude/qualified-alpha/packages/mtl.inc
+    qprelude/qualified-alpha/packages/semigroups.inc
+    qprelude/qualified-alpha/packages/split.inc
+    qprelude/qualified-alpha/packages/storablevector.inc
+    qprelude/qualified-alpha/packages/tagged.inc
+    qprelude/qualified-alpha/packages/text.inc
+    qprelude/qualified-alpha/packages/transformers.inc
+    qprelude/qualified-alpha/packages/unordered-containers.inc
+    qprelude/qualified-alpha/packages/unsafe.inc
+    qprelude/qualified-alpha/packages/vector.inc
+    qprelude/types-unqualified/all.inc
+    qprelude/types-unqualified/packages/base.inc
+    qprelude/types-unqualified/packages/containers.inc
+    qprelude/types-unqualified/packages/dlist.inc
+    qprelude/types-unqualified/packages/text.inc
+    qprelude/types-unqualified/packages/unordered-containers.inc
+  }
+  build-depends:
+  { base >=4.8 && <4.9
+  , deepseq <1.5
+  }
+  hs-source-dirs: {
+    src
+  }
+  default-language: {
+    Haskell2010
+  }
+}
+
+test-suite test001 {
+  type:                exitcode-stdio-1.0
+  default-language:    Haskell2010
+  buildable:           True
+  main-is:             Main.hs
+  hs-source-dirs:      src-test001
+  build-depends:
+    { qualified-prelude
+    , aeson
+    , array
+    , async
+    , attoparsec
+    , base64-bytestring
+    , base
+    , binary
+    , blaze-builder
+    , bytestring
+    , Cabal
+    , case-insensitive
+    , cereal
+    , cmdargs
+    , conduit
+    , containers
+    , criterion
+    , data-default
+    , deepseq
+    , directory
+    , dlist
+    , doctest
+    , either
+    , exceptions
+    , extra
+    , filepath
+    , hashable
+    , haskeline
+    , hoopl
+    , hpc
+    , hspec
+    , http-conduit
+    , HTTP
+    , http-types
+    , HUnit
+    , lens
+    , monad-control
+    , mtl
+    , multistate
+    , network
+    , network-uri
+    , optparse-applicative
+    , parallel
+    , parsec
+    , pretty
+    , primitive
+    , process
+    , QuickCheck
+    , random
+    , resourcet
+    , safe
+    , scientific
+    , semigroups
+    , split
+    , stm
+    , storablevector
+    , syb
+    , tagged
+    , tasty-hunit
+    , tasty
+    , tasty-quickcheck
+    , template-haskell
+    , terminfo
+    , test-framework-hunit
+    , test-framework
+    , text
+    , time
+    , transformers
+    , unix
+    , unordered-containers
+    , unsafe
+    , utf8-string
+    , vector
+    , wai
+    , xhtml
+    }
+  ghc-options: {
+    -Wall
+    -fno-warn-unused-imports
+  }
+  default-extensions: {
+    CPP
+  }
+}
+
