@@ -1,3 +1,15 @@
+~~~~
+module Main where
+
+#include "qprelude/bundle-gamma.inc"
+ 
+main :: IO ()
+main = do
+  print $ Map.singleton True True
+  print $ DList.fromList [1::Int,2,3]
+  Text.IO.putStrLn $ Text.pack "hello, world."
+~~~~
+
 # Quick Introduction
 
 Normal custom Preludes are nice, but fall flat in one respect:
@@ -45,22 +57,11 @@ Disadvantages include:
     b) are at risk of getting unwanted (evil?) instances into
        scope. E.g. see [`base:Text.Show.Functions`](https://hackage.haskell.org/package/base/docs/Text-Show-Functions.html).
 
+* Module deprecation warnings will be hard/impossible to support.
+  At least at a first glance.
+
 This package provides this kind of CPP Prelude, or rather:
 A set of headers from which you can mix and match.
-
-Example:
-
-~~~~
-module Main where
-
-#include "qprelude/bundle-gamma.inc"
- 
-main :: IO ()
-main = do
-  print $ Map.singleton True True
-  print $ DList.fromList [1::Int,2,3]
-  Text.IO.putStrLn $ Text.pack "hello, world."
-~~~~
 
 # Usage
 
