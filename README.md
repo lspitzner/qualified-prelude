@@ -41,7 +41,10 @@ Advantages of this approach include:
 Disadvantages include:
 
 * You need CPP globally (well, whereever you want to include
-  the Prelude-header).
+  the Prelude-header). This comes along with certain negatives,
+  most prominently unnecessary recompiles (see [this post from yuras](http://blog.haskell-exists.com/yuras/posts/stop-abusing-cpp-in-haskell.html),
+  although not everything applies if you only use CPP for the
+  import.)
 
 * The opacity of what exactly is in scope past the one line
   
