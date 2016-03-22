@@ -87,6 +87,22 @@ Again, full details below.
 
 At this stage, highly experimental. Open for discussion.
 
+Because this package avoids listing dependencies, it cannot define version
+bounds either. This is a problem: if qualified-prelude expects a package
+`foo` to contain a specific set of packages, but `foo` was since
+updated and one of its modules removed, there will be an error.
+
+I am not sure how to resolve this. At least, the hole process of listing
+the modules for packages needs to be automated in order to reduce the
+maintenance necessary for this package to a reasonable amount.
+
+Until this issue is resolved, the potential of arbitrary breakage due to new
+releases of other packages makes this package currently unfit for hackage, in
+my opinion.
+
+(Releasing versions of qualified-prelude that work with specific stackage
+snapshots might be possible, on the other hand.)
+
 # Implementation
 
 Put long lists of
