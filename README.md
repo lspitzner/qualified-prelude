@@ -59,6 +59,8 @@ Disadvantages include:
     a) effectively need `-fno-warn-unused-imports` and
     b) are at risk of getting unwanted (evil?) instances into
        scope. E.g. see [`base:Text.Show.Functions`](https://hackage.haskell.org/package/base/docs/Text-Show-Functions.html).
+       (That particular module is _not_ included even in the
+       qualified-everything-qualified header for base.)
 
 * Module deprecation warnings will be hard/impossible to support.
   At least at a first glance.
@@ -92,7 +94,7 @@ At this stage, highly experimental. Open for discussion.
 
 Because this package avoids listing dependencies, it cannot define version
 bounds either. This is a problem: if qualified-prelude expects a package
-`foo` to contain a specific set of packages, but `foo` was since
+`foo` to contain a specific set of modules, but `foo` was since
 updated and one of its modules removed, there will be an error.
 
 I am not sure how to resolve this. At least, the hole process of listing
