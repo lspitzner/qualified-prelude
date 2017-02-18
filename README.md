@@ -1,12 +1,12 @@
 ~~~~
 module Main where
 
-#include "qprelude/bundle-gamma.inc"
- 
+#include "qprelude/default.inc"
+
 main :: IO ()
 main = do
-  print $ Map.singleton True True
-  print $ DList.fromList [1::Int,2,3]
+  System.IO.print $ MapS.singleton True True
+  System.IO.print $ DList.fromList [1::Int,2,3]
   Text.IO.putStrLn $ Text.pack "hello, world."
 ~~~~
 
@@ -38,7 +38,7 @@ Advantages of this approach include:
 * There is a consistent mapping of shorter names to commonly used
   modules, e.g. `Map` for `Data.Map`.
 
-Disadvantages include:
+Disadvantages _in general_ include:
 
 * You need CPP globally (well, whereever you want to include
   the Prelude-header). This comes along with certain negatives,
@@ -49,7 +49,7 @@ Disadvantages include:
 * The opacity of what exactly is in scope past the one line
   
     ~~~~
-    #include "qprelude/bundle-alpha.inc"
+    #include "qprelude/default.inc"
     ~~~~
   
     at the top of your module.
@@ -65,77 +65,38 @@ Disadvantages include:
 * Module deprecation warnings will be hard/impossible to support.
   At least at a first glance.
 
-This package provides this kind of CPP Prelude, or rather:
-A set of headers from which you can mix and match.
+* If you run wild and create an include file with a 1000
+  "import qualified Data.Foo as Foo" lines, and use that
+  include file in every module of a 50-module project,
+  compilation time suffers. I am not completely certain of
+  the exact numbers, but I think you have ~1ms per import,
+  so now your project takes 50 seconds to compile.
+  
+  Before version 0.1, this repo did exactly that (having
+  too many imports). At version 0.1, I selected a much
+  smaller set of modules (and dependent packages).
+
+This package provides one such CPP Prelude with a subjectively
+selected set of modules that I use sufficiently frequently
+to warrant putting them in my Prelude.
 
 # Usage
 
-Use an `#include` like in the above example. Put your
-dependencies in your `foo.cabal` file. (Almost) all modules
-from packages supported by qualified-prelude will be
-available at least with full qualification. See the full list
-below.
-
-Alternatives include:
-
-* `qprelude/fully/all.inc`: all imports are fully
-  qualified.
-* `qprelude/bundle-alpha.inc`: only some types and very few
-  functions are imported unqualified; a certain set of
-  modules has shorter names (like `Map`).
-* `qprelude/bundle-gamma.inc`: A somewhat larger default
-  Prelude (arbitrary selection).
-
-Again, full details below.
+Add qualified-prelude as a dependency; use an `#include` like in the above example. Currently
+there are (at least) the following headers:
+- qprelude/default.inc (custom Prelude + a few qualified imports from base, text, mtl)
+- qprelude/multistate.inc (multistate package qualified imports)
+- qprelude/either.inc (either package - EitherT, hoistEither, left, right, bimapEitherT + a few qualified imports)
 
 # Stability
 
-At this stage, highly experimental. Open for discussion.
+The package is still experimental. Open for discussion. I don't know how to cope with changes in the reexported modules, for example. Or if whole modules get removed.
 
-Because this package avoids listing dependencies, it cannot define version
-bounds either. This is a problem: if qualified-prelude expects a package
-`foo` to contain a specific set of modules, but `foo` was since
-updated and one of its modules removed, there will be an error.
+### Note that this repository had a somewhat different approach before version 0.1. Since version 0.1:
+- the package has some explicit dependencies.
+- it reexports many modules (but not all, this is open for discussion as well) from its dependencies. This means users don't even need to add dependencies explicitly to their project if the modules are reexported from here. If that is a good thing, API-stability-wise.. not sure.
+- the default.inc header contains a rather small set of qualified imports plus a somewhat larger Prelude (collection of unqualified imports/bindings).
 
-I am not sure how to resolve this. At least, the hole process of listing
-the modules for packages needs to be automated in order to reduce the
-maintenance necessary for this package to a reasonable amount.
-
-Until this issue is resolved, the potential of arbitrary breakage due to new
-releases of other packages makes this package currently unfit for hackage, in
-my opinion.
-
-(Releasing versions of qualified-prelude that work with specific stackage
-snapshots might be possible, on the other hand.)
-
-# Implementation
-
-Put long lists of
-
-~~~~
-#ifdef MIN_VERSION_whatever
-import qualified Whatever.Some.Module
-import qualified Whatever.Other.Module
-import qualified Some.Deeply.Nested as Shortcut
-import Some.Deeply.Nested ( these, i, want, unqualified )
-#endif
-~~~~
-
-into files; make them includable.
-
-# Headers
-
-While fully qualifying modules is mostly free of risk (apart
-from evil instances), providing shorter identifiers (`M` for
-`Data.Map`) is risky because there may be name clashes. The
-user might want to use `M` for .. well i dunno, but you get
-the idea. Even more so for unqualified imports.
-
-For this reason, this packages defines several different
-headers.
-
-[[TODO]]
-
-# Full list of indexed packages:
+# Full list of what is re-exported / in the default.inc header:
 
 [[TODO]]
