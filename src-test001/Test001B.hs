@@ -1,9 +1,13 @@
 module Test001B where
 
-#include "qprelude/bundle-gamma.inc"
+#include "qprelude/default.inc"
+#include "qprelude/either.inc"
+#include "qprelude/multistate.inc"
+
+
 
 main :: IO ()
 main = do
-  print $ Map.singleton True True
+  print $ MapS.singleton True True
   print $ DList.fromList [1::Int,2,3]
   Text.IO.putStrLn $ Text.pack "hello, world."

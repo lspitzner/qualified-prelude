@@ -1,9 +1,0 @@
-import qualified Data.IntMap as IntMap
-import qualified Data.IntMap.Lazy as IntMapL
-import qualified Data.IntMap.Strict as IntMapS
-import qualified Data.IntSet as IntSet
-import qualified Data.Map as Map
-import qualified Data.Map.Lazy as MapL
-import qualified Data.Map.Strict as MapS
-import qualified Data.Sequence as Seq
-import qualified Data.Set as Set

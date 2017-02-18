@@ -5,5 +5,4 @@ where
 
 
 import qualified Test001A
-import qualified Test001B
-import           Test001C
+import           Test001B

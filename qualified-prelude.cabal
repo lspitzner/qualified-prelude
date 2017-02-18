@@ -1,5 +1,5 @@
 name:                qualified-prelude
-version:             0.0.0.999.11
+version:             0.1.0.0
 synopsis:            A Prelude providing qualified imports by using CPP
 license:             BSD3
 license-file:        LICENSE
@@ -8,7 +8,7 @@ maintainer:          lsp@informatik.uni-kiel.de
 -- copyright:           
 category:            Prelude
 build-type:          Simple
-cabal-version:       >=1.10
+cabal-version:       >=1.21
 
 description: {
   Description is in the README. [Please implement markdown
@@ -21,8 +21,9 @@ extra-source-files: {
 }
 library {
   exposed-modules: {
-    QPrelude.Basics
-    QPrelude.ErrorIf
+    QualifiedPrelude.Unqualified
+    QualifiedPrelude.Partial
+    QualifiedPrelude.List
   }  
   -- other-modules:       
   -- other-extensions:    
@@ -30,116 +31,345 @@ library {
     src-headers
   }
   install-includes: {
-    qprelude/bundle-alpha.inc
-    qprelude/bundle-gamma.inc
-    qprelude/fully/all.inc
-    qprelude/fully/bootlibs.inc
-    qprelude/fully/packages/aeson.inc
-    qprelude/fully/packages/array.inc
-    qprelude/fully/packages/async.inc
-    qprelude/fully/packages/attoparsec.inc
-    qprelude/fully/packages/base64-bytestring.inc
-    qprelude/fully/packages/base.inc
-    qprelude/fully/packages/binary.inc
-    qprelude/fully/packages/blaze-builder.inc
-    qprelude/fully/packages/bytestring.inc
-    qprelude/fully/packages/Cabal.inc
-    qprelude/fully/packages/case-insensitive.inc
-    qprelude/fully/packages/cereal.inc
-    qprelude/fully/packages/cmdargs.inc
-    qprelude/fully/packages/conduit.inc
-    qprelude/fully/packages/containers.inc
-    qprelude/fully/packages/criterion.inc
-    qprelude/fully/packages/data-default.inc
-    qprelude/fully/packages/deepseq.inc
-    qprelude/fully/packages/directory.inc
-    qprelude/fully/packages/dlist.inc
-    qprelude/fully/packages/doctest.inc
-    qprelude/fully/packages/either.inc
-    qprelude/fully/packages/exceptions.inc
-    qprelude/fully/packages/extra.inc
-    qprelude/fully/packages/filepath.inc
-    qprelude/fully/packages/hashable.inc
-    qprelude/fully/packages/haskeline.inc
-    qprelude/fully/packages/hoopl.inc
-    qprelude/fully/packages/hpc.inc
-    qprelude/fully/packages/hspec.inc
-    qprelude/fully/packages/http-conduit.inc
-    qprelude/fully/packages/HTTP.inc
-    qprelude/fully/packages/http-types.inc
-    qprelude/fully/packages/HUnit.inc
-    qprelude/fully/packages/interger-gmp.inc
-    qprelude/fully/packages/lens.inc
-    qprelude/fully/packages/monad-control.inc
-    qprelude/fully/packages/mtl.inc
-    qprelude/fully/packages/multistate.inc
-    qprelude/fully/packages/network.inc
-    qprelude/fully/packages/network-uri.inc
-    qprelude/fully/packages/optparse-applicative.inc
-    qprelude/fully/packages/parallel.inc
-    qprelude/fully/packages/parsec.inc
-    qprelude/fully/packages/pretty.inc
-    qprelude/fully/packages/primitive.inc
-    qprelude/fully/packages/process.inc
-    qprelude/fully/packages/QuickCheck.inc
-    qprelude/fully/packages/random.inc
-    qprelude/fully/packages/resourcet.inc
-    qprelude/fully/packages/safe.inc
-    qprelude/fully/packages/scientific.inc
-    qprelude/fully/packages/semigroups.inc
-    qprelude/fully/packages/split.inc
-    qprelude/fully/packages/stm.inc
-    qprelude/fully/packages/storablevector.inc
-    qprelude/fully/packages/syb.inc
-    qprelude/fully/packages/tagged.inc
-    qprelude/fully/packages/tasty-hunit.inc
-    qprelude/fully/packages/tasty.inc
-    qprelude/fully/packages/tasty-quickcheck.inc
-    qprelude/fully/packages/template-haskell.inc
-    qprelude/fully/packages/terminfo.inc
-    qprelude/fully/packages/test-framework-hunit.inc
-    qprelude/fully/packages/test-framework.inc
-    qprelude/fully/packages/text.inc
-    qprelude/fully/packages/time.inc
-    qprelude/fully/packages/transformers.inc
-    qprelude/fully/packages/unix.inc
-    qprelude/fully/packages/unordered-containers.inc
-    qprelude/fully/packages/unsafe.inc
-    qprelude/fully/packages/utf8-string.inc
-    qprelude/fully/packages/vector.inc
-    qprelude/fully/packages/wai.inc
-    qprelude/fully/packages/xhtml.inc
-    qprelude/prelude-alpha/all.inc
-    qprelude/prelude-beta/all.inc
-    qprelude/prelude-eta/all.inc
-    qprelude/qualified-alpha/all.inc
-    qprelude/qualified-alpha/packages/base.inc
-    qprelude/qualified-alpha/packages/binary.inc
-    qprelude/qualified-alpha/packages/bytestring.inc
-    qprelude/qualified-alpha/packages/containers.inc
-    qprelude/qualified-alpha/packages/deepseq.inc
-    qprelude/qualified-alpha/packages/dlist.inc
-    qprelude/qualified-alpha/packages/mtl.inc
-    qprelude/qualified-alpha/packages/semigroups.inc
-    qprelude/qualified-alpha/packages/split.inc
-    qprelude/qualified-alpha/packages/storablevector.inc
-    qprelude/qualified-alpha/packages/tagged.inc
-    qprelude/qualified-alpha/packages/text.inc
-    qprelude/qualified-alpha/packages/transformers.inc
-    qprelude/qualified-alpha/packages/unordered-containers.inc
-    qprelude/qualified-alpha/packages/unsafe.inc
-    qprelude/qualified-alpha/packages/vector.inc
-    qprelude/types-unqualified/all.inc
-    qprelude/types-unqualified/packages/base.inc
-    qprelude/types-unqualified/packages/containers.inc
-    qprelude/types-unqualified/packages/dlist.inc
-    qprelude/types-unqualified/packages/text.inc
-    qprelude/types-unqualified/packages/unordered-containers.inc
+    qprelude/default.inc
+    qprelude/either.inc
+    qprelude/multistate.inc
+  }
+  ghc-options: {
+    -Wall
   }
   build-depends:
-  { base >=4.8 && <4.9
+  { array
+  , base >=4.8 && <4.10
+  , binary
+  , bytestring
+  , clock
+  , containers
   , deepseq <1.5
+  , directory
+  , dlist
+  , extra
+  , filepath
+  , hashable
+  , mtl
+  , process
+  , safe
+  , semigroups
+  , tagged
+  , text
+  , transformers
+  , unordered-containers
+  , unsafe
+  , stateWriter
   }
+  reexported-modules:
+    -- array
+    { Data.Array
+    , Data.Array.Base
+    , Data.Array.IArray
+    , Data.Array.IO
+    , Data.Array.IO.Safe
+    , Data.Array.MArray
+    , Data.Array.MArray.Safe
+    , Data.Array.ST
+    , Data.Array.ST.Safe
+    , Data.Array.Storable
+    , Data.Array.Storable.Safe
+    , Data.Array.Unboxed
+    -- base
+    , Control.Applicative
+    , Control.Arrow
+    , Control.Category
+    , Control.Concurrent
+    , Control.Concurrent.Chan
+    , Control.Concurrent.MVar
+    , Control.Concurrent.QSem
+    , Control.Concurrent.QSemN
+    , Control.Exception
+    , Control.Monad
+    , Control.Monad.Fix
+    , Control.Monad.IO.Class
+    , Control.Monad.Instances
+    , Control.Monad.ST
+    , Control.Monad.ST.Lazy
+    , Control.Monad.ST.Lazy.Safe
+    , Control.Monad.ST.Safe
+    , Control.Monad.ST.Strict
+    , Control.Monad.Zip
+    , Data.Bifunctor
+    , Data.Bits
+    , Data.Bool
+    , Data.Char
+    , Data.Coerce
+    , Data.Complex
+    , Data.Data
+    , Data.Dynamic
+    , Data.Either
+    , Data.Eq
+    , Data.Fixed
+    , Data.Foldable
+    , Data.Function
+    , Data.Functor
+    , Data.Functor.Classes
+    , Data.Functor.Compose
+    , Data.Functor.Identity
+    , Data.Functor.Product
+    , Data.Functor.Sum
+    , Data.IORef
+    , Data.Int
+    , Data.Ix
+    , Data.List
+    , Data.Maybe
+    , Data.Monoid
+    , Data.Ord
+    , Data.Ratio
+    , Data.STRef
+    , Data.STRef.Lazy
+    , Data.STRef.Strict
+    , Data.String
+    , Data.Traversable
+    , Data.Tuple
+    , Data.Type.Bool
+    , Data.Type.Coercion
+    , Data.Type.Equality
+    , Data.Typeable
+    , Data.Typeable.Internal
+    , Data.Unique
+    , Data.Version
+    , Data.Void
+    , Data.Word
+    , Debug.Trace
+    , Foreign
+    , Foreign.C
+    , Foreign.C.Error
+    , Foreign.C.String
+    , Foreign.C.Types
+    , Foreign.Concurrent
+    , Foreign.ForeignPtr
+    , Foreign.ForeignPtr.Safe
+    , Foreign.ForeignPtr.Unsafe
+    , Foreign.Marshal
+    , Foreign.Marshal.Alloc
+    , Foreign.Marshal.Array
+    , Foreign.Marshal.Error
+    , Foreign.Marshal.Pool
+    , Foreign.Marshal.Safe
+    , Foreign.Marshal.Unsafe
+    , Foreign.Marshal.Utils
+    , Foreign.Ptr
+    , Foreign.Safe
+    , Foreign.StablePtr
+    , Foreign.Storable
+    , Numeric
+    , Numeric.Natural
+    , System.CPUTime
+    , System.Console.GetOpt
+    , System.Environment
+    , System.Exit
+    , System.IO
+    , System.IO.Error
+    , System.IO.Unsafe
+    , System.Info
+    , System.Mem
+    , System.Mem.StableName
+    , System.Mem.Weak
+    , System.Posix.Internals
+    , System.Posix.Types
+    , System.Timeout
+    , Text.ParserCombinators.ReadP
+    , Text.ParserCombinators.ReadPrec
+    , Text.Printf
+    , Text.Read
+    , Text.Read.Lex
+    , Text.Show
+    , Text.Show.Functions
+    -- binary
+    , Data.Binary
+    , Data.Binary.Builder
+    , Data.Binary.Get
+    , Data.Binary.Get.Internal
+    , Data.Binary.Put
+    -- bytestring
+    , Data.ByteString
+    , Data.ByteString.Builder
+    , Data.ByteString.Builder.Extra
+    , Data.ByteString.Builder.Internal
+    , Data.ByteString.Builder.Prim
+    , Data.ByteString.Builder.Prim.Internal
+    , Data.ByteString.Char8
+    , Data.ByteString.Internal
+    , Data.ByteString.Lazy
+    , Data.ByteString.Lazy.Builder
+    , Data.ByteString.Lazy.Builder.ASCII
+    , Data.ByteString.Lazy.Builder.Extras
+    , Data.ByteString.Lazy.Char8
+    , Data.ByteString.Lazy.Internal
+    , Data.ByteString.Short
+    , Data.ByteString.Short.Internal
+    , Data.ByteString.Unsafe
+    -- clock
+    , System.Clock
+    -- containers
+    , Data.Graph
+    , Data.IntMap
+    , Data.IntMap.Lazy
+    , Data.IntMap.Strict
+    , Data.IntSet
+    , Data.Map
+    , Data.Map.Lazy
+    , Data.Map.Strict
+    , Data.Sequence
+    , Data.Set
+    , Data.Tree
+    -- deepseq
+    , Control.DeepSeq
+    -- directory
+    , System.Directory
+    -- dlist
+    , Data.DList
+    -- extra
+    , Control.Concurrent.Extra
+    , Control.Exception.Extra
+    , Control.Monad.Extra
+    , Data.Either.Extra
+    , Data.IORef.Extra
+    , Data.List.Extra
+    , Data.Tuple.Extra
+    , Data.Typeable.Extra
+    , Data.Version.Extra
+    , Extra
+    , Numeric.Extra
+    , System.Directory.Extra
+    , System.Environment.Extra
+    , System.IO.Extra
+    , System.Info.Extra
+    , System.Process.Extra
+    , System.Time.Extra
+    -- filepath
+    , System.FilePath
+    , System.FilePath.Posix
+    , System.FilePath.Windows
+    -- hashable
+    , Data.Hashable
+    -- mtl
+    , Control.Monad.Cont
+    , Control.Monad.Cont.Class
+    , Control.Monad.Error
+    , Control.Monad.Error.Class
+    , Control.Monad.Except
+    , Control.Monad.Identity
+    , Control.Monad.List
+    , Control.Monad.RWS
+    , Control.Monad.RWS.Class
+    , Control.Monad.RWS.Lazy
+    , Control.Monad.RWS.Strict
+    , Control.Monad.Reader
+    , Control.Monad.Reader.Class
+    , Control.Monad.State
+    , Control.Monad.State.Class
+    , Control.Monad.State.Lazy
+    , Control.Monad.State.Strict
+    , Control.Monad.Trans
+    , Control.Monad.Writer
+    , Control.Monad.Writer.Class
+    , Control.Monad.Writer.Lazy
+    , Control.Monad.Writer.Strict
+    -- process
+    , System.Cmd
+    , System.Process
+    , System.Process.Internals
+    -- safe
+    , Safe
+    , Safe.Exact
+    , Safe.Foldable
+    -- semigroups
+    , Data.List.NonEmpty
+    , Data.Semigroup
+    -- tagged
+    , Data.Proxy
+    , Data.Proxy.TH
+    , Data.Tagged
+    -- text
+    , Data.Text
+    , Data.Text.Array
+    , Data.Text.Encoding
+    , Data.Text.Encoding.Error
+    , Data.Text.Foreign
+    , Data.Text.IO
+    , Data.Text.Internal
+    , Data.Text.Internal.Builder
+    , Data.Text.Internal.Builder.Functions
+    , Data.Text.Internal.Builder.Int.Digits
+    , Data.Text.Internal.Builder.RealFloat.Functions
+    , Data.Text.Internal.Encoding.Fusion
+    , Data.Text.Internal.Encoding.Fusion.Common
+    , Data.Text.Internal.Encoding.Utf16
+    , Data.Text.Internal.Encoding.Utf32
+    , Data.Text.Internal.Encoding.Utf8
+    , Data.Text.Internal.Functions
+    , Data.Text.Internal.Fusion
+    , Data.Text.Internal.Fusion.CaseMapping
+    , Data.Text.Internal.Fusion.Common
+    , Data.Text.Internal.Fusion.Size
+    , Data.Text.Internal.Fusion.Types
+    , Data.Text.Internal.IO
+    , Data.Text.Internal.Lazy
+    , Data.Text.Internal.Lazy.Encoding.Fusion
+    , Data.Text.Internal.Lazy.Fusion
+    , Data.Text.Internal.Lazy.Search
+    , Data.Text.Internal.Private
+    , Data.Text.Internal.Read
+    , Data.Text.Internal.Search
+    , Data.Text.Internal.Unsafe
+    , Data.Text.Internal.Unsafe.Char
+    , Data.Text.Internal.Unsafe.Shift
+    , Data.Text.Lazy
+    , Data.Text.Lazy.Builder
+    , Data.Text.Lazy.Builder.Int
+    , Data.Text.Lazy.Builder.RealFloat
+    , Data.Text.Lazy.Encoding
+    , Data.Text.Lazy.IO
+    , Data.Text.Lazy.Internal
+    , Data.Text.Lazy.Read
+    , Data.Text.Read
+    , Data.Text.Unsafe
+    -- transformers
+    , Control.Applicative.Backwards
+    , Control.Applicative.Lift
+    , Control.Monad.Signatures
+    , Control.Monad.Trans.Class
+    , Control.Monad.Trans.Cont
+    , Control.Monad.Trans.Error
+    , Control.Monad.Trans.Except
+    , Control.Monad.Trans.Identity
+    , Control.Monad.Trans.List
+    , Control.Monad.Trans.Maybe
+    , Control.Monad.Trans.RWS
+    , Control.Monad.Trans.RWS.Lazy
+    , Control.Monad.Trans.RWS.Strict
+    , Control.Monad.Trans.Reader
+    , Control.Monad.Trans.State
+    , Control.Monad.Trans.State.Lazy
+    , Control.Monad.Trans.State.Strict
+    , Control.Monad.Trans.Writer
+    , Control.Monad.Trans.Writer.Lazy
+    , Control.Monad.Trans.Writer.Strict
+    , Data.Functor.Constant
+    , Data.Functor.Reverse
+    -- unordered-containers
+    , Data.HashMap.Lazy
+    , Data.HashMap.Strict
+    , Data.HashSet
+    -- unsafe
+    , System.Unsafe
+    -- stateWriter
+    , Control.Monad.RSS
+    , Control.Monad.RSS.Lazy
+    , Control.Monad.RSS.Strict
+    , Control.Monad.Trans.RSS
+    , Control.Monad.Trans.RSS.Lazy
+    , Control.Monad.Trans.RSS.Strict
+    }
   hs-source-dirs: {
     src
   }
@@ -156,81 +386,86 @@ test-suite test001 {
   hs-source-dirs:      src-test001
   build-depends:
     { qualified-prelude
-    , aeson
-    , array
-    , async
-    , attoparsec
-    , base64-bytestring
     , base
-    , binary
-    , blaze-builder
-    , bytestring
-    , Cabal
-    , case-insensitive
-    , cereal
-    , cmdargs
-    , conduit
-    , containers
-    , criterion
-    , data-default
-    , deepseq
-    , directory
-    , dlist
-    , doctest
+    , array
     , either
-    , exceptions
-    , extra
-    , filepath
-    , hashable
-    , haskeline
-    , hoopl
-    , hpc
-    , hspec
-    , http-conduit
-    , HTTP
-    , http-types
-    , HUnit
-    , lens
-    , monad-control
-    , mtl
     , multistate
-    , network
-    , network-uri
-    , optparse-applicative
-    , parallel
-    , parsec
-    , pretty
-    , primitive
-    , process
-    , QuickCheck
-    , random
-    , resourcet
-    , safe
-    , scientific
-    , semigroups
-    , split
-    , stm
-    , storablevector
-    , syb
-    , tagged
-    , tasty-hunit
-    , tasty
-    , tasty-quickcheck
-    , template-haskell
-    , terminfo
-    , test-framework-hunit
-    , test-framework
-    , text
-    , time
-    , transformers
-    , unix
-    , unordered-containers
-    , unsafe
-    , utf8-string
-    , vector
-    , wai
-    , xhtml
     }
+    -- , aeson
+    -- , array
+    -- , async
+    -- , attoparsec
+    -- , base64-bytestring
+    -- , base
+    -- , binary
+    -- , blaze-builder
+    -- , bytestring
+    -- , Cabal
+    -- , case-insensitive
+    -- , cereal
+    -- , cmdargs
+    -- , conduit
+    -- , containers
+    -- , criterion
+    -- , data-default
+    -- , deepseq
+    -- , directory
+    -- , dlist
+    -- , doctest
+    -- , either
+    -- , exceptions
+    -- , extra
+    -- , filepath
+    -- , hashable
+    -- , haskeline
+    -- , hoopl
+    -- , hpc
+    -- , hspec
+    -- , http-conduit
+    -- , HTTP
+    -- , http-types
+    -- , HUnit
+    -- , lens
+    -- , monad-control
+    -- , mtl
+    -- , multistate
+    -- , network
+    -- , network-uri
+    -- , optparse-applicative
+    -- , parallel
+    -- , parsec
+    -- , pretty
+    -- , primitive
+    -- , process
+    -- , QuickCheck
+    -- , random
+    -- , resourcet
+    -- , safe
+    -- , scientific
+    -- , semigroups
+    -- , split
+    -- , stm
+    -- , storablevector
+    -- , syb
+    -- , tagged
+    -- , tasty-hunit
+    -- , tasty
+    -- , tasty-quickcheck
+    -- , template-haskell
+    -- , terminfo
+    -- , test-framework-hunit
+    -- , test-framework
+    -- , text
+    -- , time
+    -- , transformers
+    -- , unix
+    -- , unordered-containers
+    -- , unsafe
+    -- , utf8-string
+    -- , vector
+    -- , wai
+    -- , xhtml
+    -- }
   ghc-options: {
     -Wall
     -fno-warn-unused-imports
@@ -240,3 +475,14 @@ test-suite test001 {
   }
 }
 
+executable testexe {
+  default-language:    Haskell2010
+  buildable:           True
+  main-is:             Main.hs
+  hs-source-dirs:      src-testexe
+  build-depends:       qualified-prelude
+  default-extensions: {
+    NoImplicitPrelude
+    CPP
+  }
+}
