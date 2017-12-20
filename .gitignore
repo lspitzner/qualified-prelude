@@ -6,6 +6,7 @@
 *.ps
 /*.pdf
 dist
+dist-newstyle
 .cabal-sandbox/
 .stack-work/
 cabal.sandbox.config

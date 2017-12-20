@@ -3,6 +3,8 @@ module QualifiedPrelude.Unqualified
   , evaluateDeep
   , (<&>)
   , (.>)
+  , (<$->)
+  , (<*->)
   )
 where
 
@@ -361,8 +363,6 @@ import Control.Monad.Trans.Maybe       as Export ( MaybeT (..)
 
 -- binary
 import Data.Binary                     as Export ( Binary ()
-                                                 , encode
-                                                 , decodeOrFail
                                                  )
 
 
@@ -401,3 +401,11 @@ infixl 4 <&>
 (.>) :: (a -> b) -> (b -> c) -> (a -> c)
 f .> g = g . f
 infixl 9 .>
+
+(<$->) :: Functor f => f a -> (a -> b) -> f b
+(<$->) = flip fmap
+infixr 4 <$->
+
+(<*->) :: Applicative f => f a -> f (a -> b) -> f b
+(<*->) = flip (<*>)
+infixr 4 <*->

@@ -2,8 +2,8 @@ import QualifiedPrelude.Unqualified
 import QualifiedPrelude.Partial as Partial
 import qualified QualifiedPrelude.List as List
 
-import qualified Data.HashMap.Strict as HashMapS ( HashMap )
-import qualified Data.HashMap.Lazy   as HashMapL ( HashMap )
+import qualified Data.HashMap.Strict as HashMapS
+import qualified Data.HashMap.Lazy   as HashMapL
 
 import qualified Data.Foldable as Foldable
 import qualified Data.Set as Set

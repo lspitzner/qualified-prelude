@@ -40,7 +40,7 @@ library {
   }
   build-depends:
   { array
-  , base >=4.8 && <4.10
+  , base >=4.8 && <4.11
   , binary
   , bytestring
   , clock
@@ -133,7 +133,6 @@ library {
     , Data.Type.Coercion
     , Data.Type.Equality
     , Data.Typeable
-    , Data.Typeable.Internal
     , Data.Unique
     , Data.Version
     , Data.Void
